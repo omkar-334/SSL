@@ -47,5 +47,5 @@ rank: 0
 multiprocessing_distributed: False
 dist_url: tcp://127.0.0.1:10012
 dist_backend: nccl
-gpu: None
+gpu: 0
 use_pretrain: False
