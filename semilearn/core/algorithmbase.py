@@ -232,6 +232,46 @@ class AlgorithmBase:
         )
         return optimizer, scheduler
 
+    def _ensure_dict_output(self, model):
+        """
+        Wrap plain torchvision models so they always return a dict
+        with `logits` and `feat` keys. Some algorithms expect this
+        structure, but torchvision builders return bare tensors.
+        """
+        if isinstance(model, torch.nn.Module):
+
+            class ModelWithDictOutput(torch.nn.Module):
+                def __init__(self, base_model):
+                    super().__init__()
+                    self.base_model = base_model
+
+                def forward(self, x):
+                    out = self.base_model(x)
+
+                    # dictionary output is already compatible
+                    if isinstance(out, dict):
+                        logits = out.get("logits", out.get("output", None))
+                        feat = out.get("feat", out.get("features", None))
+                        if logits is None:
+                            # fallback: treat dict content as logits
+                            logits = out
+                            feat = None
+                        return {"logits": logits, "feat": feat}
+
+                    # tuple output, e.g., (logits, features)
+                    if isinstance(out, tuple):
+                        if len(out) >= 2:
+                            return {"logits": out[0], "feat": out[1]}
+                        if len(out) == 1:
+                            out = out[0]
+
+                    # tensor output, default path
+                    return {"logits": out, "feat": None}
+
+            return ModelWithDictOutput(model)
+
+        return model
+
     def set_model(self):
         """
         Initialize model
@@ -239,7 +279,7 @@ class AlgorithmBase:
         model = self.net_builder(
             num_classes=self.num_classes, pretrained=self.args.use_pretrain
         )
-        return model
+        return self._ensure_dict_output(model)
 
     def set_ema_model(self):
         """
@@ -247,7 +287,7 @@ class AlgorithmBase:
         """
         ema_model = self.net_builder(num_classes=self.num_classes)
         ema_model.load_state_dict(self.model.state_dict())
-        return ema_model
+        return self._ensure_dict_output(ema_model)
 
     def set_hooks(self):
         """
