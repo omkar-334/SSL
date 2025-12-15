@@ -1,7 +1,7 @@
 algorithm: freematch
 save_dir: ./saved_models/usb_cv/
 save_name: freematch_sugarcane_40_0
-resume: True
+resume: False
 load_path: ./saved_models/usb_cv//freematch_sugarcane_40_0/latest_model.pth
 overwrite: True
 use_tensorboard: True
@@ -36,11 +36,11 @@ data_dir: ./data
 dataset: sugarcane
 train_sampler: RandomSampler
 num_classes: 4
-num_workers: 4
+num_workers: 0
 seed: 0
 world_size: 1
 rank: 0
-multiprocessing_distributed: True
+multiprocessing_distributed: False
 dist_url: tcp://127.0.0.1:10011
 dist_backend: nccl
 gpu: None

@@ -268,6 +268,9 @@ class SugarcaneDataset(BasicDataset):
     def __sample__(self, index):
         """Sample an image and target"""
         path = self.data[index]
-        img = Image.open(path).convert("RGB")
+        try:
+            img = Image.open(path).convert("RGB")
+        except Exception as e:
+            raise RuntimeError(f"Error loading image from {path}: {e}")
         target = self.targets[index] if self.targets is not None else None
         return img, target
