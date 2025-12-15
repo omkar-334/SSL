@@ -46,5 +46,3 @@ dist_url: tcp://127.0.0.1:10010
 dist_backend: nccl
 gpu: None
 use_pretrain: False
-pretrain_path: ""
-
