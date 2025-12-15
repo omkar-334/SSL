@@ -286,8 +286,9 @@ class AlgorithmBase:
         Initialize ema model from model
         """
         ema_model = self.net_builder(num_classes=self.num_classes)
+        ema_model = self._ensure_dict_output(ema_model)
         ema_model.load_state_dict(self.model.state_dict())
-        return self._ensure_dict_output(ema_model)
+        return ema_model
 
     def set_hooks(self):
         """
