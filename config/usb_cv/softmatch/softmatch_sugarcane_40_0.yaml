@@ -35,7 +35,7 @@ amp: False
 clip: 0.0
 use_cat: False
 net: resnet18
-net_from_name: True
+net_from_name: False
 data_dir: ./data
 dataset: sugarcane
 train_sampler: RandomSampler
