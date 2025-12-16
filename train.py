@@ -12,7 +12,7 @@ import torch
 import torch.backends.cudnn as cudnn
 import torch.distributed as dist
 import torch.multiprocessing as mp
-import torch.nn.parallel
+
 from semilearn.algorithms import get_algorithm, name2alg
 from semilearn.core.utils import (
     TBLog,
@@ -114,7 +114,7 @@ def get_config():
     Algorithms Configurations
     """
 
-    ## core algorithm setting
+    # core algorithm setting
     parser.add_argument(
         "-alg", "--algorithm", type=str, default="fixmatch", help="ssl algorithm"
     )
@@ -129,7 +129,7 @@ def get_config():
     )
     parser.add_argument("--clip_grad", type=float, default=0)
 
-    ## imbalance algorithm setting
+    # imbalance algorithm setting
     parser.add_argument(
         "-imb_alg",
         "--imb_algorithm",
@@ -142,7 +142,7 @@ def get_config():
     Data Configurations
     """
 
-    ## standard setting configurations
+    # standard setting configurations
     parser.add_argument("--data_dir", type=str, default="./data")
     parser.add_argument("-ds", "--dataset", type=str, default="cifar10")
     parser.add_argument("-nc", "--num_classes", type=int, default=10)
@@ -155,7 +155,7 @@ def get_config():
         help="flag of including labeled data into unlabeled data, default to True",
     )
 
-    ## imbalanced setting arguments
+    # imbalanced setting arguments
     parser.add_argument(
         "--lb_imb_ratio",
         type=int,
@@ -176,14 +176,14 @@ def get_config():
         "number of labels in imbalanced setting",
     )
 
-    ## cv dataset arguments
+    # cv dataset arguments
     parser.add_argument("--img_size", type=int, default=32)
     parser.add_argument("--crop_ratio", type=float, default=0.875)
 
-    ## nlp dataset arguments
+    # nlp dataset arguments
     parser.add_argument("--max_length", type=int, default=512)
 
-    ## speech dataset algorithms
+    # speech dataset algorithms
     parser.add_argument("--max_length_seconds", type=float, default=4.0)
     parser.add_argument("--sample_rate", type=int, default=16000)
 
@@ -191,7 +191,7 @@ def get_config():
     multi-GPUs & Distributed Training
     """
 
-    ## args for distributed training (from https://github.com/pytorch/examples/blob/master/imagenet/main.py)  # noqa: E501
+    # args for distributed training (from https://github.com/pytorch/examples/blob/master/imagenet/main.py)
     parser.add_argument(
         "--world-size",
         default=1,
@@ -259,10 +259,9 @@ def main(args):
     For (Distributed)DataParallelism,
     main(args) spawn each process (main_worker) to each GPU.
     """
-
-    assert (
-        args.num_train_iter % args.epoch == 0
-    ), f"# total training iter. {args.num_train_iter} is not divisible by # epochs {args.epoch}"  # noqa: E501
+    assert args.num_train_iter % args.epoch == 0, (
+        f"# total training iter. {args.num_train_iter} is not divisible by # epochs {args.epoch}"
+    )
 
     save_path = os.path.join(args.save_dir, args.save_name)
     if os.path.exists(save_path) and args.overwrite and args.resume is False:
@@ -270,7 +269,7 @@ def main(args):
 
         shutil.rmtree(save_path)
     if os.path.exists(save_path) and not args.overwrite:
-        raise Exception("already existing model: {}".format(save_path))
+        raise Exception(f"already existing model: {save_path}")
     if args.resume:
         if args.load_path is None:
             raise Exception("Resume of training requires --load_path in the args")
@@ -321,7 +320,6 @@ def main_worker(gpu, ngpus_per_node, args):
     """
     main_worker is conducted on each GPU.
     """
-
     global best_acc1
     args.gpu = gpu
 
@@ -379,13 +377,13 @@ def main_worker(gpu, ngpus_per_node, args):
         try:
             model.load_model(args.load_path)
         except:
-            logger.info("Fail to resume load path {}".format(args.load_path))
+            logger.info(f"Fail to resume load path {args.load_path}")
             args.resume = False
     else:
-        logger.info("Resume load path {} does not exist".format(args.load_path))
+        logger.info(f"Resume load path {args.load_path} does not exist")
 
     if hasattr(model, "warmup"):
-        logger.info(("Warmup stage"))
+        logger.info("Warmup stage")
         model.warmup()
 
     # START TRAINING of FixMatch
@@ -394,7 +392,7 @@ def main_worker(gpu, ngpus_per_node, args):
 
     # print validation (and test results)
     for key, item in model.results_dict.items():
-        logger.info(f"Model result - {key} : {item}")
+        logger.info("Model result - %s : %s", key, item)
 
     if hasattr(model, "finetune"):
         logger.info("Finetune stage")
