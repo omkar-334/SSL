@@ -6,7 +6,7 @@ load_path: ./saved_models/usb_cv//softmatch_sugarcane_40_0/latest_model.pth
 overwrite: True
 use_tensorboard: True
 use_wandb: False
-epoch: 30
+epoch: 35
 num_train_iter: 7500
 num_log_iter: 250
 num_eval_iter: 500
@@ -27,14 +27,14 @@ n_sigma: 2
 img_size: 224
 crop_ratio: 0.875
 optim: AdamW
-lr: 5e-04
+lr: 1e-04
 layer_decay: 1.0
 momentum: 0.9
 weight_decay: 0.0005
 amp: False
 clip: 0.0
 use_cat: False
-net: resnet18
+net: resnet50
 net_from_name: True
 data_dir: ./data
 dataset: sugarcane

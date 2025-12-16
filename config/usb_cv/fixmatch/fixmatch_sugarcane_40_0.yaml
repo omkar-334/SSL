@@ -1,8 +1,8 @@
-algorithm: flexmatch
+algorithm: fixmatch
 save_dir: ./saved_models/usb_cv/
-save_name: flexmatch_sugarcane_40_0
+save_name: fixmatch_sugarcane_40_0
 resume: False
-load_path: ./saved_models/usb_cv//flexmatch_sugarcane_40_0/latest_model.pth
+load_path: ./saved_models/usb_cv//fixmatch_sugarcane_40_0/latest_model.pth
 overwrite: True
 use_tensorboard: True
 use_wandb: False
@@ -18,9 +18,8 @@ uratio: 1
 ema_m: 0.0
 hard_label: True
 T: 0.5
-thresh_warmup: True
-p_cutoff: 0.95
-ulb_loss_ratio: 1.0
+ema_p: 0.999
+ent_loss_ratio: 0.001
 img_size: 224
 crop_ratio: 0.875
 optim: AdamW
@@ -42,7 +41,7 @@ seed: 0
 world_size: 1
 rank: 0
 multiprocessing_distributed: False
-dist_url: tcp://127.0.0.1:10010
+dist_url: tcp://127.0.0.1:10011
 dist_backend: nccl
 gpu: 0
 use_pretrain: False
