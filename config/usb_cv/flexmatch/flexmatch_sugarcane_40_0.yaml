@@ -14,7 +14,7 @@ batch_size: 8
 eval_batch_size: 16
 num_warmup_iter: 700
 num_labels: 200
-uratio: 1
+uratio: 9
 ema_m: 0.0
 hard_label: True
 T: 0.5
