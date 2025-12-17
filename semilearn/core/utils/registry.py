@@ -4,9 +4,10 @@
 import importlib
 
 __all__ = [
-    'ALGORITHMS',
-    'IMB_ALGORITHMS',
+    "ALGORITHMS",
+    "IMB_ALGORITHMS",
 ]
+
 
 class Register:
     def __init__(self, registry_name):
@@ -42,13 +43,12 @@ class Register:
         return key in self._dict
 
     def keys(self):
-        """key"""
+        """Key"""
         return self._dict.keys()
 
 
-ALGORITHMS = Register('algorithms')
-IMB_ALGORITHMS = Register('imb_algorithms')
-
+ALGORITHMS = Register("algorithms")
+IMB_ALGORITHMS = Register("imb_algorithms")
 
 
 def _handle_errors(errors):
@@ -57,17 +57,43 @@ def _handle_errors(errors):
     """
     if not errors:
         return
-    
+
     for name, err in errors:
-        print("Module {} import failed: {}".format(name, err))
+        print(f"Module {name} import failed: {err}")
 
 
 ALL_MODULES = [
     # NOTE: add all algorithms here
-    ('semilearn.algorithms', ['adamatch', 'comatch', 'crmatch', 'dash', 'fixmatch', 'flexmatch', 'fullysupervised', 'meanteacher',
-                              'mixmatch', 'pimodel', 'pseudolabel', 'remixmatch', 'simmatch', 'uda', 'vat', 'softmatch', 'freematch',
-                              'sequencematch', 'refixmatch', 'multimatch']),
-    ('semilearn.imb_algorithms', ['abc', 'cossl', 'adsh', 'crest', 'darp', 'daso', 'debiaspl', 'saw', 'tras'])
+    (
+        "semilearn.algorithms",
+        [
+            "adamatch",
+            "comatch",
+            "crmatch",
+            "dash",
+            "fixmatch",
+            "flexmatch",
+            "fullysupervised",
+            "meanteacher",
+            "gapmatch",
+            "mixmatch",
+            "pimodel",
+            "pseudolabel",
+            "remixmatch",
+            "simmatch",
+            "uda",
+            "vat",
+            "softmatch",
+            "freematch",
+            "sequencematch",
+            "refixmatch",
+            "multimatch",
+        ],
+    ),
+    (
+        "semilearn.imb_algorithms",
+        ["abc", "cossl", "adsh", "crest", "darp", "daso", "debiaspl", "saw", "tras"],
+    ),
 ]
 
 
@@ -88,4 +114,3 @@ def import_all_modules_for_register():
             except ImportError as error:
                 errors.append((name, error))
     _handle_errors(errors)
-
