@@ -13,7 +13,7 @@ num_eval_iter: 500
 batch_size: 8
 eval_batch_size: 16
 num_warmup_iter: 700
-num_labels: 200
+num_labels: 400
 uratio: 1
 ema_m: 0.0
 hard_label: True
@@ -23,7 +23,7 @@ ent_loss_ratio: 0.001
 img_size: 224
 crop_ratio: 0.875
 optim: AdamW
-lr: 1e-04
+lr: 5e-04
 layer_decay: 1.0
 momentum: 0.9
 weight_decay: 0.0005
