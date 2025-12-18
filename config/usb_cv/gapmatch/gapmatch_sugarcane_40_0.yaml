@@ -22,7 +22,7 @@ ema_p: 0.999
 ent_loss_ratio: 0.001
 img_size: 224
 crop_ratio: 0.875
-optim: AdamW
+optim: SGD
 lr: 5e-04
 layer_decay: 1.0
 momentum: 0.9
